@@ -1,5 +1,6 @@
 package com.example.Homework201;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -9,20 +10,21 @@ import java.util.concurrent.ConcurrentHashMap;
 @RestController
 @RequestMapping("/store/order")
 public class CartController {
-    private final Map<String, Cart> carts = new ConcurrentHashMap<>();
+    private final CartService cartService;
 
-    @GetMapping("/get")
-    public List<Integer> getItems(@RequestHeader("X-Session-Id") String sessionId) {
-        Cart cart = carts.getOrDefault(sessionId, new Cart());
-        return cart.getItems();
+    public CartController(CartService cartService) {
+        this.cartService = cartService;
     }
 
-    @PostMapping("/add")
-    public void addItem(@RequestHeader("X-Session-Id") String sessionId, @RequestParam("itemId") List<Integer> itemIds) {
-        Cart cart = carts.getOrDefault(sessionId, new Cart());
-        for (int itemId : itemIds) {
-            cart.addItem(itemId);
-        }
-        carts.put(sessionId, cart);
+    @GetMapping("/get")
+    public List<Integer> getCartItems(HttpServletRequest request) {
+        String sessionId = request.getSession().getId();
+        return cartService.getCartItems(sessionId);
+    }
+
+    @GetMapping("/add")
+    public void addItemToCart(HttpServletRequest request, @RequestParam("itemId") int itemId) {
+        String sessionId = request.getSession().getId();
+        cartService.addItemToCart(sessionId, itemId);
     }
 }

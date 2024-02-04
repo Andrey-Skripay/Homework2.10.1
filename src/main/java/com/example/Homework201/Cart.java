@@ -10,12 +10,12 @@ public class Cart {
         this.items = new ArrayList<>();
     }
 
-    public void addItem(int itemId) {
-        items.add(itemId);
-    }
-
     public List<Integer> getItems() {
         return items;
+    }
+
+    public void addItem(int itemId) {
+        items.add(itemId);
     }
 }
 
