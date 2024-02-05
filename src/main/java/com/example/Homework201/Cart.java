@@ -1,8 +1,13 @@
 package com.example.Homework201;
 
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.SessionScope;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
+@SessionScope
 public class Cart {
     private List<Integer> items;
 
@@ -18,4 +23,3 @@ public class Cart {
         items.add(itemId);
     }
 }
-
